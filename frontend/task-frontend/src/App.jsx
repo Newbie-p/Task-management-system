@@ -4,6 +4,11 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 
+const RequireAuth = ({ children }) => {
+  const token = localStorage.getItem("token");
+  return token ? children : <Navigate to="/login" replace />;
+};
+
 function App() {
   return (
     <BrowserRouter>
@@ -15,11 +20,9 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            localStorage.getItem("token") ? (
+            <RequireAuth>
               <Dashboard />
-            ) : (
-              <Navigate to="/login" replace />
-            )
+            </RequireAuth>
           }
         />
       </Routes>
